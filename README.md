@@ -55,8 +55,7 @@
 ### vite.config.js
 
    
---------------------------------------------------------------
-![image](https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/3c84c66b-5ec5-4a44-913e-e09270dcd727)
+
 
 
 ## Description
@@ -89,15 +88,7 @@ Myntra is an online e-commerce website for personal care and beauty products. Si
 - **js:** For functionality.
 - **Chakra UI:** For dropdoown And hamaburger.
 
-## Screenshots
 
-<img width="949" alt="Capture" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/9cde2563-96f7-462e-aa4b-2e6ac954d6b5">
-<img width="944" alt="Capture2" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/f0f61c7a-55ca-478d-9ea3-c4bfbdae6b91">
-<img width="950" alt="Capt1ure" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/c7271ecf-7eae-4a47-9dd8-0de6c672cc3a">
-<img width="768" alt="Ca121pture" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/945ad66b-a24c-4a46-96e5-b3d818b69390">
-<img width="946" alt="Capture3" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/cf4bb16b-e7b8-477b-aa05-683ea710f3e3">
-<img width="776" alt="Captu2re" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/cf962b18-4029-4e8c-9eee-55b9e1d1a2bd">
-<img width="944" alt="Capture5" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/5d991d8a-48e8-4f24-a620-7bccc5fda5f2">
 
 ## Installation
 
