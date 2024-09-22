@@ -98,8 +98,6 @@ Myntra is an online e-commerce website for personal care and beauty products. Si
 <img width="946" alt="Capture3" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/cf4bb16b-e7b8-477b-aa05-683ea710f3e3">
 <img width="776" alt="Captu2re" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/cf962b18-4029-4e8c-9eee-55b9e1d1a2bd">
 <img width="944" alt="Capture5" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/5d991d8a-48e8-4f24-a620-7bccc5fda5f2">
-<img width="944" alt="Capture4" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/895b3dcd-24db-45bb-8898-92e2acaefbf9">
-<img width="944" alt="Capture4" src="https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/assets/139108196/e14d0227-1be1-4402-9225-24fdbacfe181">
 
 ## Installation
 
@@ -108,7 +106,7 @@ Follow these steps to set up the project locally:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/Rahulkrsharma2004/Myntra-App-Frontend/frontend.git
+   git clone https://github.com/callmeprinceyadav/Myntra-App-Frontend/frontend.git
    cd Myntra-App-Frontend/frontend
    npm run dev
 
