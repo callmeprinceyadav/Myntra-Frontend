@@ -29,7 +29,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       let response = await axios.post(
-        "https://myntra-app-backend.vercel.app/users/register",
+        "",
         userDetails,
         { withCredentials: true }
       );

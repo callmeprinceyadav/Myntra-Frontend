@@ -44,7 +44,7 @@ const Product = () => {
 
   const getProducts = async () => {
     try {
-      let endpoint = "https://myntra-app-backend.vercel.app/products/";
+      let endpoint = "";
       const params = new URLSearchParams();
 
       if (category && category !== "") {

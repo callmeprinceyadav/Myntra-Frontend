@@ -25,7 +25,7 @@ const ProductStr = ({ product }) => {
     } else {
       try {
         const res = await axios.post(
-          `https://myntra-app-backend.vercel.app/wishlists/add/${id}`,
+          ``,
           { withCredentials: true }
         );
         console.log(res)

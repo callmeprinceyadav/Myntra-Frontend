@@ -20,7 +20,7 @@ const SingleProduct = () => {
     const fetchProduct = async () => {
       try {
         let response = await axios.get(
-          `https://myntra-app-backend.vercel.app/products?_id=${id}`
+          ``
         );
         response = response.data.products.filter((ele) => {
           if (id == ele._id) {
@@ -59,7 +59,7 @@ const SingleProduct = () => {
     } else {
       try {
         const res = await axios.post(
-          `https://myntra-app-backend.vercel.app/carts/add/${id}`,
+          ``,
           { withCredentials: true }
         );
         if (res.data.message === "Product Added Successfully") {
@@ -99,7 +99,7 @@ const SingleProduct = () => {
     } else {
       try {
         const res = await axios.post(
-          `https://myntra-app-backend.vercel.app/wishlists/add/${id}`,
+          ``,
           { withCredentials: true }
         );
         if (res.data.message === "Product Added Successfully in Wishlist") {

@@ -23,7 +23,7 @@ const Navbar = () => {
     try {
       console.log("first");
       const response = await axios.post(
-        "https://myntra-app-backend.vercel.app/users/logout",
+        "",
         {},
         { withCredentials: true }
       );

@@ -19,7 +19,7 @@ const Wishlist = () => {
   const showWishData = async () => {
     try {
       const res = await axios.get(
-        `https://myntra-app-backend.vercel.app/wishlists/`,
+        ``,
         { withCredentials: true }
       );
       setWishData(res.data.myWishlist);
@@ -31,12 +31,12 @@ const Wishlist = () => {
   const handleMoveToBag = async (id) => {
     try {
       const addToBagRes = await axios.post(
-        `https://myntra-app-backend.vercel.app/carts/add/${id}`,
+        ``,
         { withCredentials: true }
       );
 
       const deleteFromWishlistRes = await axios.delete(
-        `https://myntra-app-backend.vercel.app/wishlists/delete/${id}`
+        ``
       );
 
       if (
@@ -73,7 +73,7 @@ const Wishlist = () => {
   const handleDeleteWish = async (id) => {
     try {
       const deleteFromWishlistRes = await axios.delete(
-        `https://myntra-app-backend.vercel.app/wishlists/delete/${id}`,
+        ``,
         { withCredentials: true }
       );
 

@@ -25,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://myntra-app-backend.vercel.app/users/login",
+        "",
         userDetails,
         { withCredentials: true }
       );

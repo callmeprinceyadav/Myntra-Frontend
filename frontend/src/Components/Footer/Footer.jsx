@@ -63,18 +63,18 @@ const footer = () => {
           <ul>
             <li>
               <p>
-                <MdCall className="footerIcon" /> +91-8084906496
+                <MdCall className="footerIcon" /> +91-9507750615
               </p>
             </li>
             <li>
               <p>
                 <MdEmail className="footerIcon" />
-                kumarrahulbasdiha@
+                pkryadav9304@gmail.com
               </p>
             </li>
             <li>
               <a
-                href="https://www.linkedin.com/in/rahul-kr-sharma-35a989280"
+                href="https://www.linkedin.com/in/callmeprinceyadav"
                 target="blank"
               >
                 <FaLinkedin className="footerIcon" />
@@ -82,14 +82,14 @@ const footer = () => {
               </a>
             </li>
             <li>
-              <a href="https://github.com/Rahulkrsharma2004" target="blank">
+              <a href="https://github.com/callmeprinceyadav" target="blank">
                 <FaGithub className="footerIcon" />
                 Github
               </a>
             </li>
             
             <li>
-              <a href="https://rahulkrsharma2004.github.io" target="blank">
+              <a href="https://checkportfolioprince.netlify.app/" target="blank">
                 <MdHome className="footerIcon" />
                 Portfolio
               </a>
@@ -106,32 +106,14 @@ const footer = () => {
           <h4>ABOUT ME</h4>
           <ul>
             <li>
-              <p>Rahul Kr Sharma</p>
+              <p>Prince Kumar</p>
             </li>
-            <li>
-              <p>Patna , Bihar</p>
-            </li>
-            
+    
             <li>
               <p>MERN Stack Developer</p>
             </li>
             
-            <li>
-              <a
-                href="https://drive.google.com/file/d/18K4GIBI1wiatSQrCazPWicrWehitUzvy/view"
-                target="blank"
-              >
-                Resume
-              </a>
-            </li>
-            <li>
-              <h3
-                href="https://github.com/piyush-agrawal6/Myntra-Frontend"
-                target="blank"
-              >
-                <FaHeart className="footerIcon" /> Thank You !!
-              </h3>
-            </li>
+            
           </ul>
         </div>
       </div>
