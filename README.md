@@ -1,4 +1,4 @@
-# Myntra-App-Frontend
+# Myntra Frontend
 
 ## Folder Structure
     ├── assets
