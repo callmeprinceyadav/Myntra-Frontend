@@ -195,6 +195,11 @@ const Home = () => {
         alt=""
         className="offerImg"
       />
+      <img
+          src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2024/10/12/3a242077-bd7a-4959-b37e-1995189220191728748100305-Opening-Hour-Offers.jpg"
+          alt=""
+          className="offerImg"
+        />
       <p className="homeHeader">BRANDS ON THE WAY UP</p>
       <div className="homeColors">
         <div>
