@@ -3,11 +3,12 @@ import { Context } from "../../Contexts/AuthContext";
 import "./Profile.css";
 import { Modal, message } from "antd";
 import Login from "../../Components/Login/Login";
+import api from "../../api/axios";
 
 const Profile = () => {
   const { isAuth, user, setUser } = useContext(Context);
   const [formData, setFormData] = useState({
-    name: user?.name || "",
+    username: user?.username || "",
     phone: user?.phone || "",
     avatar: user?.avatar || "",
     gender: user?.gender || "",
@@ -37,131 +38,158 @@ const Profile = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    let updatedData = { ...formData };
-
-    if (!selectedFile) {
-      updatedData.avatar = user.avatar; // Preserve the existing avatar if no new file is selected
+    try {
+      const response = await api.put("/users/update", formData);
+      if (response.status === 200) {
+        // Sync with AuthContext
+        const updatedUser = response.data.user;
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        message.success("Profile updated successfully!");
+        setModal2Open(false);
+      }
+    } catch (error) {
+      console.error("Profile update error:", error);
+      message.error("Failed to update profile");
     }
-
-    setUser((prevUser) => ({
-      ...prevUser,
-      ...updatedData,
-    }));
-
-    message.success("Profile updated successfully!");
-    setModal2Open(false);
   };
 
   return (
-    <div className="profile">
-      <div className="profileCon">
-        <h2 style={{ textAlign: "center", color: "Highlight", fontWeight: "bold", fontSize: "1.5rem" }}>
-          Create Your Profile
-        </h2>
-        <div className="profileImage">
-          <img src={formData.avatar || "default-avatar-url"} alt="" />
-          <button
-            onClick={() => setModal2Open(true)}
-            className="editProfileBtn"
-          >
-            EDIT PROFILE
-          </button>
-        </div>
-        <div className="profileDetails">
-          <h3>Profile Details</h3>
-          <div>
-            <p>Full Name</p>
-            <p>{user?.name || "--"}</p>
+    <div className="profile-page">
+      <div className="profile-container">
+        {/* Sidebar Nav */}
+        <div className="profile-sidebar">
+          <div className="sidebar-header">
+            <h4>Account</h4>
+            <p style={{ fontSize: "12px", color: "#7e818c" }}>{user?.email || "User"}</p>
           </div>
-          <div>
-            <p>Mobile Number</p>
-            <p>{user?.phone || "--"}</p>
-          </div>
-          <div>
-            <p>Email</p>
-            <p>{user?.email || "--"}</p>
-          </div>
-          <div>
-            <p>Gender</p>
-            <p>{user?.gender || "--"}</p>
-          </div>
-          <div>
-            <p>Shipping Details</p>
-            <p>{user?.shipping || "--"}</p>
+          <div className="sidebar-nav">
+            <span className="nav-item active">Profile Details</span>
+            <span className="nav-item">Orders & Returns</span>
+            <span className="nav-item">Wishlist</span>
+            <span className="nav-item">Addresses</span>
+            <span className="nav-item">Coupons</span>
           </div>
         </div>
+
+        {/* Main Content */}
+        <div className="profile-content">
+          <div className="content-header">
+            <h3>Profile Details</h3>
+            <button
+              onClick={() => setModal2Open(true)}
+              className="edit-btn"
+            >
+              Edit
+            </button>
+          </div>
+
+          <div className="profile-avatar-section">
+            <img src={user?.avatar || "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png"} alt="User Profile" />
+            <span style={{ fontWeight: "700", color: "#282c3f" }}>{user?.username}</span>
+          </div>
+
+          <div className="details-grid">
+            <div className="detail-box">
+              <p className="detail-label">Full Name</p>
+              <p className="detail-value">{user?.username || "--"}</p>
+            </div>
+            <div className="detail-box">
+              <p className="detail-label">Mobile Number</p>
+              <p className="detail-value">{user?.phone || "--"}</p>
+            </div>
+            <div className="detail-box">
+              <p className="detail-label">Email ID</p>
+              <p className="detail-value">{user?.email || "--"}</p>
+            </div>
+            <div className="detail-box">
+              <p className="detail-label">Gender</p>
+              <p className="detail-value" style={{ textTransform: "capitalize" }}>{user?.gender || "--"}</p>
+            </div>
+            <div className="detail-box" style={{ gridColumn: "span 2" }}>
+              <p className="detail-label">Shipping Address</p>
+              <p className="detail-value">{user?.shipping || "--"}</p>
+            </div>
+          </div>
+        </div>
+
         <Modal
-          title="Edit your personal details"
+          title="Edit Profile"
           open={modal2Open}
           footer={null}
           onCancel={() => setModal2Open(false)}
         >
           <form onSubmit={handleFormSubmit} className="profileForm">
-            <input
-              name="name"
-              value={formData.name}
-              onChange={handleFormChange}
-              type="text"
-              placeholder="Full name"
-              required
-            />
-            <br />
-            <input
-              name="phone"
-              value={formData.phone}
-              onChange={handleFormChange}
-              type="tel"
-              required
-              placeholder="Enter phone number"
-            />
-            <br />
-            <input
-              name="email"
-              value={formData.email}
-              onChange={handleFormChange}
-              type="email"
-              required
-              placeholder="Enter email address"
-            />
-            <br />
-            <input
-              type="file"
-              onChange={handleFileChange}
-              accept="image/*"
-            />
-            <br />
-            <input
-              name="shipping"
-              value={formData.shipping}
-              onChange={handleFormChange}
-              type="text"
-              required
-              placeholder="Shipping details"
-            />
-            <br />
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleFormChange}
-            >
-              <option value="">Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Others</option>
-            </select>
-            <br />
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ fontSize: "12px", color: "#7e818c", display: "block", marginBottom: "5px" }}>Full Name</label>
+              <input
+                name="username"
+                value={formData.username}
+                onChange={handleFormChange}
+                type="text"
+                placeholder="Full Name"
+                required
+              />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ fontSize: "12px", color: "#7e818c", display: "block", marginBottom: "5px" }}>Phone Number</label>
+              <input
+                name="phone"
+                value={formData.phone}
+                onChange={handleFormChange}
+                type="tel"
+                required
+                placeholder="Mobile Number"
+              />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ fontSize: "12px", color: "#7e818c", display: "block", marginBottom: "5px" }}>Shipping Address</label>
+              <input
+                name="shipping"
+                value={formData.shipping}
+                onChange={handleFormChange}
+                type="text"
+                required
+                placeholder="Full Address"
+              />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ fontSize: "12px", color: "#7e818c", display: "block", marginBottom: "5px" }}>Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleFormChange}
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Others</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ fontSize: "12px", color: "#7e818c", display: "block", marginBottom: "5px" }}>Avatar URL</label>
+              <input
+                name="avatar"
+                value={formData.avatar}
+                onChange={handleFormChange}
+                type="text"
+                placeholder="Paste image URL here"
+              />
+            </div>
+
             <div className="modalActions">
               <button
                 type="button"
                 onClick={() => setModal2Open(false)}
-                className="cancelBtn"
+                className="btn-myntra btn-secondary"
+                style={{ width: "45%" }}
               >
                 Cancel
               </button>
-              <button type="submit" className="saveBtn">
-                Save
+              <button type="submit" className="btn-myntra btn-primary" style={{ width: "45%" }}>
+                Save Changes
               </button>
             </div>
           </form>

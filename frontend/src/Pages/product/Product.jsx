@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Product.css";
 import ProductStr from "../../Components/Product/ProductStr";
-import { Select, Skeleton, Checkbox } from "antd";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { Select, Skeleton } from "antd";
+import { useLocation, useSearchParams } from "react-router-dom";
 import {
   Box,
   VStack,
@@ -13,8 +12,9 @@ import {
   Text,
   CheckboxGroup,
   HStack,
+  Checkbox,
 } from "@chakra-ui/react";
-import { useSearchParams } from "react-router-dom";
+import api from "../../api/axios";
 
 const Product = () => {
   const search = useLocation().search;
@@ -42,38 +42,33 @@ const Product = () => {
     },
   ];
 
-  const getProducts = async () => {
-    try {
-      let endpoint = "";
-      const params = new URLSearchParams();
+    const fetchProducts = async () => {
+      setProLoading(true);
+      try {
+        const params = {
+          page,
+          category: searchParams.get("category"),
+          subcategory: searchParams.get("subcategory"),
+          brand: searchParams.get("brand"),
+          type: searchParams.get("type"),
+        };
 
-      if (category && category !== "") {
-        params.append("category", category);
-      }
-      params.append("page", page);
+        // Filter out null/empty params
+        Object.keys(params).forEach(key => !params[key] && delete params[key]);
 
-      console.log(`Fetching products from: ${endpoint}?${params.toString()}`);
-
-      const response = await axios.get(`${endpoint}?${params.toString()}`, {
-        withCredentials: true,
-      });
-
-      console.log("API Response:", response.data);
-
-      setProducts(response.data.products);
-
-      setTimeout(() => {
+        console.log(`Fetching products with params:`, params);
+        const response = await api.get("/products", { params });
+        setProducts(response.data.products);
         setProLoading(false);
-      }, 5000);
-    } catch (error) {
-      console.log("Error fetching products:", error);
-      setProLoading(false);
-    }
-  };
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setProLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    getProducts();
-  }, [category, page]);
+    useEffect(() => {
+      fetchProducts();
+    }, [searchParams, page]);
 
 
 
@@ -101,15 +96,17 @@ const Product = () => {
     if (checked) {
       setSearchParams({
         ...searchParams,
-        category: [
-          "TShirts",
+        subcategory: [
+          "Shirts",
+          "Kurtas",
+          "T-Shirts",
           "Jeans",
-          "Kurta Sets",
-          "Trousers",
+          "Watches",
+          "Dresses"
         ],
       });
     } else {
-      setSearchParams({ ...searchParams, category: [] });
+      setSearchParams({ ...searchParams, subcategory: [] });
     }
   };
 
@@ -130,118 +127,84 @@ const Product = () => {
   });
 
   return (
-    <div className="productCon">
-      <div className="proContainer">
+    <div className="product-page">
+      <div className="product-top-bar">
         <p className="proNavigation">
-          <span>Home /</span> {category ? category : ""}
+          <span>Home /</span> {category ? category : "All Products"}
         </p>
-        <div className="proSort">
-          <Select
-            size="large"
-            placeholder="Sort-By-Price"
-            className="sortBy"
-            style={{
-              width: 200,
-              border: "2px solid gray",
-              color: "black",
-              borderRadius: "8px",
-              outline: "none",
-            }}
-            options={sortOptions}
-            onChange={handleSortChange}
-          />
+        <div className="product-summary-row">
+          <div className="proCount">
+            {category || "Products"} <span>- {products.length} items</span>
+          </div>
+          <div className="proSort">
+            <Select
+              size="large"
+              placeholder="Sort-By-Price"
+              className="sortBy"
+              style={{ width: 220 }}
+              options={sortOptions}
+              onChange={handleSortChange}
+            />
+          </div>
         </div>
       </div>
-      <div className="proBox">
-        <div className="proFilters">
-          <VStack
-            alignItems={"flex-start"}
-            spacing={1}
-            position={"sticky"}
-            bottom={"1000px"}
-          >
-            <HStack mt={"8px"} pl={4} fontWeight={700}>
-              FILTERS
-            </HStack>
-            <Divider />
-            <Box pl={4}>
-              <RadioGroup
-                onChange={handleType}
-                value={searchParams.get("type")}
-                size={"sm"}
-              ></RadioGroup>
-            </Box>
-            <Divider />
-            <Box pl={4}>
-              <Text
-                fontSize={"14px"}
-                fontWeight={700}
-                color="#282c3f"
-                textAlign={"left"}
-              >
-                CATEGORIES
-              </Text>
-              <CheckboxGroup
-                size={"sm"}
-                onChange={handleCategory}
-                defaultValue={searchParams.getAll("category")}
-              >
-                <VStack alignItems={"flex-start"} mt={"3"} spacing={4}>
-                  <Checkbox value="TShirts">TShirts</Checkbox>
-                  <Checkbox value="Jeans">Jeans</Checkbox>
-                  <Checkbox value="Kurta Sets">Kurta Sets</Checkbox>
-                  <Checkbox value="Trousers">Trousers</Checkbox>
-                  <Checkbox
-                    value="All"
-                    onChange={(e) =>
-                      handleSelectAllCategories(e.target.checked)
-                    }
-                  >
-                    Select All
-                  </Checkbox>
-                </VStack>
-              </CheckboxGroup>
-            </Box>
-            <Divider />
-            <Box pl={4}>
-              <Text
-                fontSize={"14px"}
-                fontWeight={700}
-                color="#282c3f"
-                textAlign={"left"}
-              >
-                BRAND
-              </Text>
-              <CheckboxGroup
-                size={"sm"}
-                onChange={handleBrand}
-                defaultValue={searchParams.getAll("brand")}
-              >
-                <Stack alignItems={"flex-start"} mt={1} spacing={1}>
-                  <Checkbox value={"Puma"}>Puma</Checkbox>
-                  <Checkbox value={"Levis"}>Levis</Checkbox>
-                  <Checkbox value={"Mewar"}>Mewar</Checkbox>
-                  <Checkbox value={"Turtle"}>Turtle</Checkbox>
-                </Stack>
-              </CheckboxGroup>
-            </Box>
-          </VStack>
-        </div>
-        {proLoading ? (
-          <div className="proGrid">
-            {[...Array(30)].map((_, ind) => (
-              <div key={ind}>
-                <Skeleton active />
-              </div>
-            ))}
+
+      <div className="product-main-container">
+        {/* Sidebar Filters */}
+        <aside className="filters-sidebar">
+          <div className="filter-header">Filters</div>
+          
+          <div className="filter-section">
+            <div className="filter-title">Categories</div>
+            <div className="filter-list">
+              {["Shirts", "Kurtas", "T-Shirts", "Jeans", "Watches", "Sarees"].map(cat => (
+                <label key={cat} className="filter-item">
+                  <input 
+                    type="checkbox" 
+                    checked={searchParams.getAll("category").includes(cat)}
+                    onChange={() => handleCategory(cat)}
+                  />
+                  {cat}
+                </label>
+              ))}
+            </div>
           </div>
-        ) : (
-          <div className="proGrid">
-            {sortedProducts.map((pro, ind) => (
-              <ProductStr product={pro} key={ind} />
-            ))}
+
+          <div className="filter-section">
+            <div className="filter-title">Brand</div>
+            <div className="filter-list">
+              {["Puma", "Roadster", "WROGN", "HRX", "Adidas", "Biba"].map(brand => (
+                <label key={brand} className="filter-item">
+                  <input 
+                    type="checkbox" 
+                    checked={searchParams.getAll("brand").includes(brand)}
+                    onChange={() => handleBrand(brand)}
+                  />
+                  {brand}
+                </label>
+              ))}
+            </div>
           </div>
-        )}
+        </aside>
+
+        {/* Product Grid */}
+        <main className="products-grid-container">
+          {proLoading ? (
+            <div className="proGrid">
+              {[...Array(10)].map((_, ind) => (
+                <div key={ind} style={{ padding: "20px" }}>
+                  <Skeleton active vertical />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="proGrid">
+              {sortedProducts.map((pro, ind) => (
+                <ProductStr product={pro} key={ind} />
+              ))}
+            </div>
+          )}
+        </main>
       </div>
     </div>
   );

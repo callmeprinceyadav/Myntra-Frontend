@@ -1,9 +1,10 @@
-import axios from "axios";
 import "./ProductStr.css";
 import { Link } from "react-router-dom";
 import { Context } from "../../Contexts/AuthContext";
 import { useContext } from "react";
 import { useToast } from "@chakra-ui/react";
+import api from "../../api/axios";
+import { MdFavoriteBorder } from "react-icons/md";
 
 // eslint-disable-next-line react/prop-types
 const ProductStr = ({ product }) => {
@@ -24,10 +25,7 @@ const ProductStr = ({ product }) => {
       });
     } else {
       try {
-        const res = await axios.post(
-          ``,
-          { withCredentials: true }
-        );
+        const res = await api.post(`/wishlists/add/${id}`);
         console.log(res)
         if (res.data.message === "Product Added Successfully in Wishlist" ) {
           // alert("Added")
@@ -55,23 +53,22 @@ const ProductStr = ({ product }) => {
   };
 
   return (
-    <div className="itemBox">
-      <Link color="a" to={`/product/${id}`}>
-        <div className="itemImage">
-          <img src={image} alt="ProductImage" />
+    <div className="product-card">
+      <div className="product-image-container">
+        <Link to={`/product/${id}`}>
+          <img src={image} alt={brand} className="product-card-image" />
+        </Link>
+        <div className="wishlist-overlay" onClick={() => handleAddWish(id)}>
+          <span className="wishlist-btn">
+            <MdFavoriteBorder style={{marginRight: "5px"}}/> WISHLIST
+          </span>
         </div>
-      </Link>
-      <div className="itemDetails">
-        <h4>{brand}</h4>
-        <p>{title}</p>
-        <div>Rs. {price}</div>
-        <div className="btnDiv">
-          <button
-            className="AddToWishlistBtn"
-            onClick={() => handleAddWish(id)}
-          >
-            ADD TO WISHLIST
-          </button>
+      </div>
+      <div className="product-card-details">
+        <h4 className="product-brand">{brand}</h4>
+        <p className="product-title">{title}</p>
+        <div className="product-price-row">
+          <span className="product-discounted-price">Rs. {price}</span>
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-import axios from "axios";
 import "./Bag.css";
 import Cart from "../../Components/Cart/Cart";
 import { Context } from "../../Contexts/AuthContext";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const Bag = () => {
   const { isAuth, setTotalItems, totalItems } = useContext(Context);
@@ -19,10 +19,7 @@ const Bag = () => {
     if (isAuth) {
       const showCartData = async () => {
         try {
-          const res = await axios.get(
-            ``,
-            { withCredentials: true }
-          );
+          const res = await api.get("/carts");
           const cartData = res.data.myCart;
           const countData = res.data.myCart.length;
 
@@ -44,10 +41,7 @@ const Bag = () => {
 
   const handleDeleteBag = async (id) => {
     try {
-      const deleteFromBag = await axios.delete(
-        ``,
-        { withCredentials: true }
-      );
+      const deleteFromBag = await api.delete(`/carts/delete/${id}`);
 
       console.log(deleteFromBag);
 
@@ -72,7 +66,7 @@ const Bag = () => {
 
   const handleDeleteAllItems = async () => {
     try {
-      await axios.delete('', { withCredentials: true });
+      await api.delete('/carts/deleteall');
       setCartData([]);
       setTotalItems(0);
     } catch (error) {
@@ -80,17 +74,61 @@ const Bag = () => {
     }
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
+    try {
+      // Create actual order in backend
+      const orderData = {
+        orderItems: cartData.map(item => ({
+          product: item._id,
+          quantity: 1,
+          image: item.image
+        })),
+        totalPrice: totalPrice,
+        shippingInfo: {
+          address: "123 Main St",
+          city: "Mumbai",
+          state: "Maharashtra",
+          country: "India",
+          pinCode: 400001,
+          phone: 9876543210
+        },
+        paymentInfo: {
+          id: "PI_" + Date.now(),
+          status: "Succeeded"
+        },
+        itemsPrice: totalPrice,
+        taxPrice: 0,
+        shippingPrice: 0
+      };
 
-      setTimeout(() => {
-        handleDeleteAllItems();
-        navigate("/");
-      }, 2000);
-    }, 3000);
+      const res = await api.post("/orders/new", orderData);
+
+      if (res.status === 201) {
+        setLoading(false);
+        setSuccess(true);
+
+        setTimeout(async () => {
+          await handleDeleteAllItems();
+          navigate("/orders");
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Payment failed:", error);
+      if (error.response) {
+        console.error("Error Status:", error.response.status);
+        console.error("Error Data:", error.response.data);
+      }
+      setLoading(false);
+      toast({
+        title: "Order Failed",
+        description: "There was an error placing your order.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   if (!isAuth) {
@@ -98,87 +136,79 @@ const Bag = () => {
   }
 
   return (
-    <div>
-      <div className="mainDivCart">
-        {cartData.map((ele) => (
-          <div key={ele._id} className="maincart">
-            <div className="itemBag">
-              <div className="bagImage">
-                <img src={ele.image} alt="ProductImage" className="imagebag" />
-              </div>
-              <div className="itemDetails">
-                <h4>{ele.brand}</h4>
-                <p>{ele.title}</p>
-                <div>Rs. {ele.price}</div>
-                <div className="sizeOptions">
-                  {ele.sizes.map((size, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        marginRight: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
-                <div style={{ margin: "auto" }}>
-                  <button
-                    className="deleteItemfromBag"
-                    onClick={() => handleDeleteBag(ele._id)}
-                  >
-                    DELETE ITEM
-                  </button>
-                </div>
-              </div>
+    <div className="bag-page">
+      <div className="bag-container">
+        {/* Left Column: Items */}
+        <div className="bag-items-list">
+          {cartData.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "50px" }}>
+              <h2>Your bag is empty!</h2>
+              <button className="btn-myntra btn-primary" style={{ marginTop: "20px" }} onClick={() => navigate("/")}>Add Items From Home</button>
             </div>
+          ) : (
+            cartData.map((ele) => (
+              <div key={ele._id} className="bag-item-card">
+                <div className="remove-item-x" onClick={() => handleDeleteBag(ele._id)}>
+                  <MdClose />
+                </div>
+                <img src={ele.image} alt={ele.title} className="bag-item-image" />
+                <div className="bag-item-details">
+                  <h4>{ele.brand}</h4>
+                  <p>{ele.title}</p>
+                  <div style={{ marginTop: "10px", fontSize: "12px", color: "#282c3f", fontWeight: "700" }}>
+                    Size: {ele.sizes[0]}
+                  </div>
+                  <div className="bag-item-price">
+                    Rs. {ele.price}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Right Column: Price Details */}
+        <div className="price-details-panel">
+          <div className="price-header">Price Details ({totalItems} Items)</div>
+          <div className="price-row">
+            <span>Total MRP</span>
+            <span>Rs. {totalPrice}</span>
           </div>
-        ))}
-      </div>
-      <hr
-        style={{
-          border: "2px gray solid",
-          marginBottom: "3rem",
-          marginTop: "3rem",
-        }}
-      />
-      <div className="bagPaymentDiv">
-        <div>
-          <h1>PAYMENT CARD</h1>
-          <h1>
-            Total Number Of Items = <span>{totalItems}</span>
-          </h1>
-          <h1>
-            Total Amount = <span>{totalPrice}</span>
-          </h1>
-          
-          {/* Payment Button or Loader */}
+          <div className="price-row">
+            <span>Discount on MRP</span>
+            <span style={{ color: "#03a685" }}>- Rs. 0</span>
+          </div>
+          <div className="price-row">
+            <span>Coupon Discount</span>
+            <span style={{ color: "#ff3f6c", cursor: "pointer" }}>Apply Coupon</span>
+          </div>
+          <div className="price-row">
+            <span>Convenience Fee</span>
+            <span><span style={{ textDecoration: "line-through" }}>Rs. 99</span> <span style={{ color: "#03a685" }}>FREE</span></span>
+          </div>
+          <div className="price-row total">
+            <span>Total Amount</span>
+            <span>Rs. {totalPrice}</span>
+          </div>
+
           {!loading && !success && (
-            <button onClick={handlePayment}>PAYMENT</button>
+            <button className="place-order-btn" onClick={handlePayment}>Place Order</button>
           )}
 
-          {/* Loader Animation */}
           {loading && (
-            <div className="loader">
-              Processing Payment...
-            </div>
+            <button className="place-order-btn" disabled style={{ opacity: 0.7 }}>Processing...</button>
           )}
-
-          {/* Success Animation */}
-          {success && (
-            <div className="successMessage">
-              <span>✔</span> Payment Successful!
-            </div>
-          )}
-
-          <img
-            src="https://user-images.strikinglycdn.com/res/hrscywv4p/image/upload/blog_service/2021-08-10-be-flexible-offer-multiple-payment-options-on-your-online-store.jpg"
-            alt="Payment Options"
-          />
         </div>
       </div>
+
+      {/* Success Animation Overlay */}
+      {success && (
+        <div className="payment-success-overlay">
+          <div className="success-icon">✔</div>
+          <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#282c3f" }}>Order Placed Successfully!</h2>
+          <p style={{ color: "#7e818c", marginTop: "10px" }}>Redirecting to your orders...</p>
+        </div>
+      )}
     </div>
   );
 };

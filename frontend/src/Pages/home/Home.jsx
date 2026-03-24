@@ -60,132 +60,132 @@ const Home = () => {
       <p className="homeHeader">CATEGORIES TO CARRY</p>
       <div className="homeCategories">
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Shirts">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/0b7869d4-f825-4625-b1db-58ad10a45f301645602467093-Shirts.jpg"
-              alt=""
+              alt="Shirts"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Kurtas">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/0f0be09e-4155-47bf-82e1-51044e7e7fd11645602467052-Kurtas.jpg"
-              alt=""
+              alt="Kurtas"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Casual Shoes">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/7a774194-94e6-49b5-b8bb-64bf9901bc671645602466989-Casual-Shoes.jpg"
-              alt=""
+              alt="Casual Shoes"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Flip Flops">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/7f814546-b705-4d9b-9ab5-1ddfeca786391645602467001-Flip-Flops.jpg"
-              alt=""
+              alt="Flip Flops"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Innerwear">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/07e5c29a-2eab-4b2d-b617-6565ffe1f4701645602467025-Innerwear.jpg"
-              alt=""
+              alt="Innerwear"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Kids&subcategory=Bath Essentials">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/09b3164c-241a-4134-baa1-49b12c56c3901645602466968-Bath-Essentials.jpg"
-              alt=""
+              alt="Bath Essentials"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Watches">
             {" "}
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/054a056f-33e8-4b6c-b747-9b88d7fce0a11645602467174-Watches.jpg"
-              alt=""
+              alt="Watches"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Kids&subcategory=T-Shirts">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/12c3b4aa-8160-442f-b93e-e896eafb1b0a1645602467160-T-Shirts-_-Shorts_Kids.jpg"
-              alt=""
+              alt="Kids T-Shirts"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Women&subcategory=Trousers">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/171a820e-96f0-4b11-a138-03953a7e05481645602467153-Trousers_W.jpg"
-              alt=""
+              alt="Trousers"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Kids&subcategory=Infant Essentials">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/355b9499-3345-4457-8b3b-2eeceaecf4561645602467020-Infant-Essentials.jpg"
-              alt=""
+              alt="Infant Essentials"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Sports Shoes">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/736f3951-e67b-414f-bfb1-56e2794d441d1645602467114-Sports-Shoes.jpg"
-              alt=""
+              alt="Sports Shoes"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Men&subcategory=Track Pants">
             {" "}
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/5860c3c2-a639-4625-ac1d-4d55406f128a1645602467134-Track-Pants.jpg"
-              alt=""
+              alt="Track Pants"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Women&subcategory=Dresses">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/67783047-7fcc-4530-9368-9be75a713e411645602466995-Dresses.jpg"
-              alt=""
+              alt="Dresses"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Women&subcategory=Handbags">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/aae4be67-e611-47f4-b94e-92a16a36df731645602467007-Hangbags.jpg"
-              alt=""
+              alt="Handbags"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Women&subcategory=Jewellery">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/b34a30a6-504b-4c94-b7e1-61391d536bc51645602467038-Jewellery.jpg"
-              alt=""
+              alt="Jewellery"
             />
           </Link>
         </div>
         <div>
-          <Link>
+          <Link to="/product?category=Women&subcategory=Sarees">
             <img
               src="https://assets.myntassets.com/f_webp,w_122,c_limit,fl_progressive,dpr_2.0/assets/images/2022/2/23/f9ca5609-b634-42d4-8c08-a8eaebb818b71645602467085-Sarees.jpg"
-              alt=""
+              alt="Sarees"
             />
           </Link>
         </div>

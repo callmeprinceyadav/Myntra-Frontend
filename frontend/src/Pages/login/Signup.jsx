@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./Signup.css";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import api from "../../api/axios";
 
 const Signup = () => {
   const [userDetails, setUserDetails] = useState({
@@ -28,10 +28,9 @@ const Signup = () => {
   const handleRegisterUser = async (e) => {
     e.preventDefault();
     try {
-      let response = await axios.post(
-        "",
-        userDetails,
-        { withCredentials: true }
+      let response = await api.post(
+        "/users/register",
+        userDetails
       );
       console.log(response);
 
@@ -82,43 +81,43 @@ const Signup = () => {
       <div className="signupContainer">
         <div className="signupImage">
           <img
-            src="https://cdni.iconscout.com/illustration/premium/thumb/sign-up-4922762-4097209.png"
-            alt="Signup"
+            src="https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/2023/10/29/9610df61-3b15-4615-a3c3-d92de434ba441698563319224-Flat_200--1-.jpg"
+            alt="Signup Banner"
           />
         </div>
         <div className="signupDetail">
           <div>
-            <h3 style={{fontSize:"30px",fontWeight:"bold"}}>SIGNUP HERE</h3>
+            <h3>Signup <span>to Myntra</span></h3>
           </div>
           <div>
             <form onSubmit={handleRegisterUser}>
               <input
-                className="loginInput"
+                className="signupInput"
                 name="username"
                 value={userDetails.username}
                 onChange={handleUserDetails}
                 type="text"
                 required
-                placeholder="Full name"
+                placeholder="Full Name"
               />
               <input
-                className="loginInput"
+                className="signupInput"
                 name="email"
                 value={userDetails.email}
                 onChange={handleUserDetails}
                 type="email"
                 required
-                placeholder="Enter email"
+                placeholder="Email Address"
               />
               <div className="passwordContainer">
                 <input
-                  className="loginInput passwordInput"
+                  className="signupInput"
                   name="pass"
                   value={userDetails.pass}
                   onChange={handleUserDetails}
                   required
                   type={showPassword ? "text" : "password"}
-                  placeholder="Set a password"
+                  placeholder="Password"
                 />
                 <span
                   className="passwordToggleIcon"
@@ -128,9 +127,12 @@ const Signup = () => {
                 </span>
               </div>
               <p>
-                Already a User? <Link to="/login">Login</Link>
+                By signing up, I agree to the <span style={{color:"#ff3f6c",fontWeight:"700"}}>Terms of Use</span> & <span style={{color:"#ff3f6c",fontWeight:"700"}}>Privacy Policy</span>
               </p>
-              <button type="submit"  className="signupBtn">CONTINUE</button>
+              <button type="submit" className="signupBtn">CONTINUE</button>
+              <p style={{marginTop:"30px"}}>
+                Already have an account? <Link to="/login" style={{color:"#ff3f6c",fontWeight:"700",textDecoration:"none"}}>Login</Link>
+              </p>
             </form>
           </div>
         </div>

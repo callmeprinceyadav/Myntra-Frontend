@@ -5,9 +5,9 @@ import "./SingleProduct.css";
 import { RiStarSFill } from "react-icons/ri";
 import { BiHeart, BiDetail } from "react-icons/bi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { Context } from "../../Contexts/AuthContext";
+import api from "../../api/axios";
 
 const SingleProduct = () => {
   const { isAuth } = useContext(Context);
@@ -19,15 +19,8 @@ const SingleProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        let response = await axios.get(
-          ``
-        );
-        response = response.data.products.filter((ele) => {
-          if (id == ele._id) {
-            return response;
-          }
-        });
-        setProduct(response);
+        let response = await api.get(`/products/${id}`);
+        setProduct([response.data.product]);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -58,10 +51,7 @@ const SingleProduct = () => {
       });
     } else {
       try {
-        const res = await axios.post(
-          ``,
-          { withCredentials: true }
-        );
+        const res = await api.post(`/carts/add/${id}`, { proQuantity });
         if (res.data.message === "Product Added Successfully") {
           toast({
             title: "Added to Bag",
@@ -98,10 +88,7 @@ const SingleProduct = () => {
       });
     } else {
       try {
-        const res = await axios.post(
-          ``,
-          { withCredentials: true }
-        );
+        const res = await api.post(`/wishlists/add/${id}`);
         if (res.data.message === "Product Added Successfully in Wishlist") {
           toast({
             title: "Added to Wishlist",
@@ -126,71 +113,60 @@ const SingleProduct = () => {
     }
   };
 
+  const [selectedSize, setSelectedSize] = useState(null);
+
   return (
     <div className="singleProComponent">
-      <div className="singleProNavigation"></div>
       <div className="singlePro">
         <div className="singleProGallery">
-          <img src={product[0].image} alt="Product" />
+          <img src={product[0].image} alt={product[0].title} />
         </div>
         <div className="singleProDetails">
-          <div className="singleProName">
-            <h2>{product[0].brand}</h2>
-            <h2>{product[0].title}</h2>
-            <p>
-              <RiStarSFill className="itemStars" /> | {product.reviews} Reviews
-            </p>
+          <h2 className="product-brand-main">{product[0].brand}</h2>
+          <h3 className="product-title-main">{product[0].title}</h3>
+
+          <div className="product-price-section">
+            <span className="current-price-large">Rs. {product[0].price}</span>
+            {product[0].oldPrice && <span className="mrp-text">Rs. {product[0].oldPrice}</span>}
+            {product[0].discount && <span className="discount-text">({product[0].discount}% OFF)</span>}
           </div>
-          <div className="singleItemDetails">
-            <div>
-              Rs. {product[0].price} <s>Rs. {product.oldPrice}</s>
-              <span>({product.discount}% OFF)</span>
-            </div>
-            <p>Inclusive of all taxes</p>
-            <h5 style={{ color: product.inStock ? "red" : "#14958f" }}>
-              Status : {product.inStock ? "Out Of Stock" : "In Stock"}
-            </h5>
+          <p className="tax-info">inclusive of all taxes</p>
+
+          <div className="size-selection-header">
+            SELECT SIZE <span>SIZE CHART {">"}</span>
           </div>
-          <h3>SIZE:</h3>
-          <div className="sizeOptions">
-            {product[0].sizes.map((size, index) => (
-              <span
-                key={index}
-                style={{
-                  marginRight: "20px",
-                  color: "red",
-                  cursor: "pointer",
-                }}
+          <div className="size-buttons-container">
+            {product[0].sizes.map((size) => (
+              <div
+                key={size}
+                className={`size-circle ${selectedSize === size ? "active" : ""}`}
+                onClick={() => setSelectedSize(size)}
               >
                 {size}
-              </span>
+              </div>
             ))}
           </div>
 
-          <div className="singleProQuantity">
-            <p>Select Quantity : {proQuantity}</p>
-            <Slider
-              defaultValue={1}
-              max={product.inStock ? 20 : 0}
-              onChange={setQuantity}
-            />
-          </div>
-          <div className="singleProButtons">
-            <button onClick={() => handleAddBag(id)}>
-              <HiOutlineShoppingBag className="singleProIcons" />
-              ADD TO BAG
+          <div className="action-buttons-container">
+            <button
+              className="add-to-bag-btn-large"
+              onClick={() => handleAddBag(id)}
+              disabled={!selectedSize}
+              style={{ opacity: !selectedSize ? 0.7 : 1 }}
+            >
+              <HiOutlineShoppingBag size={22} /> ADD TO BAG
             </button>
-            <button onClick={() => handleAddWish(id)}>
-              <BiHeart className="singleProIcons" />
-              ADD TO WISHLIST
+            <button
+              className="wishlist-btn-large"
+              onClick={() => handleAddWish(id)}
+            >
+              <MdFavoriteBorder size={22} /> WISHLIST
             </button>
           </div>
-          <div className="singleProDescription">
-            <h3>
-              PRODUCT DETAILS <BiDetail />
-            </h3>
-            <p>{product[0].description}</p>
-            {product.size && <h4>Size: {product.size}</h4>}
+
+          <div className="product-details-description">
+            <h3>PRODUCT DETAILS</h3>
+            <p>{product[0].description || "No description available for this premium product."}</p>
           </div>
         </div>
       </div>

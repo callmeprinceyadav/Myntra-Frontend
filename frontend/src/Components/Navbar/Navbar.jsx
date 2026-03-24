@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import axios from "axios";
+import api from "../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { BiSearch, BiUser, BiHeart } from "react-icons/bi";
@@ -17,46 +17,33 @@ const Navbar = () => {
   const toast = useToast();
   const { isAuth, setIsAuth, user, setUser, totalItems } = useContext(Context);
 
-  console.log(totalItems, "navabar");
-
   const handleLogout = async () => {
     try {
-      console.log("first");
-      const response = await axios.post(
-        "",
-        {},
-        { withCredentials: true }
-      );
-      console.log("response", response);
-      console.log("second");
-      // Cookies.remove("ACCESS_TOKEN")
-      if (response.data == "Logout Successfully") {
+      const response = await api.post("/users/logout");
+      if (response.status === 200) {
         setIsAuth(false);
         setUser("");
-        localStorage.removeItem("setIsAuth", false);
-        localStorage.removeItem("setUser", "");
-        // alert('Logout Successfully')
+        localStorage.removeItem("isAuth");
+        localStorage.removeItem("user");
         toast({
           title: "Logout Successfully",
           status: "success",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
           position: "top",
         });
         navigate("/");
       }
     } catch (error) {
-      if (error.response == "Internal Server Error") {
-        // alert("Internal Server Error")
-        toast({
-          title: "Internal Server Error",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-        });
-        console.log("first");
-      }
+      console.error("Logout failed:", error);
+      toast({
+        title: "Logout Failed",
+        description: error.response?.data?.message || "Internal Server Error",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
     }
   };
 
@@ -89,7 +76,7 @@ const Navbar = () => {
     {
       label: isAuth ? (
         <div>
-          <h4 style={{ color: "green" }}>WELCOME {user}</h4>
+          <h4 style={{ color: "green" }}>WELCOME {user?.username || user}</h4>
           <p>Access orders and many more !</p>
         </div>
       ) : (
@@ -171,60 +158,60 @@ const Navbar = () => {
                     <ul>
                       <p>Men</p>
                       <li
-                        onClick={() => handleClick("subcategory", "T-shirts")}
+                        onClick={() => handleClick("subcategory", "T-Shirts")}
                       >
-                        <Link to={`/product?subcategories=T-shirts`}>
+                        <Link to={`/product?subcategory=T-Shirts`}>
                           T-Shirts
                         </Link>
                       </li>
                       <li
                         onClick={() => handleClick("subcategory", "Flip Flops")}
                       >
-                        <Link to={`/product?subcategories=Flip-Flops`}>
+                        <Link to={`/product?subcategory=Flip Flops`}>
                           Flip Flops
                         </Link>
                       </li>
                       <li onClick={() => handleClick("subcategory", "Jeans")}>
-                        <Link to={`/product?subcategories=Jeans`}>Jeans</Link>
+                        <Link to={`/product?subcategory=Jeans`}>Jeans</Link>
                       </li>
                     </ul>
                   </div>
                   <div className="menuList">
                     <ul>
                       <p>Women</p>
-                      <li>
-                        <Link>Kurtas & Suits</Link>
+                      <li onClick={() => handleClick("subcategory", "Kurtas")}>
+                        <Link to="/product?subcategory=Kurtas">Kurtas & Suits</Link>
                       </li>
-                      <li>
-                        <Link>Sarees</Link>
+                      <li onClick={() => handleClick("subcategory", "Sarees")}>
+                        <Link to="/product?subcategory=Sarees">Sarees</Link>
                       </li>
-                      <li>
-                        <Link>Heels</Link>
+                      <li onClick={() => handleClick("subcategory", "Dresses")}>
+                        <Link to="/product?subcategory=Dresses">Dresses</Link>
                       </li>
                     </ul>
                   </div>
                   <div className="menuList">
                     <ul>
                       <p>Kids</p>
-                      <li>
-                        <Link>T-Shirts</Link>
+                      <li onClick={() => handleClick("subcategory", "T-Shirts")}>
+                        <Link to="/product?subcategory=T-Shirts">T-Shirts</Link>
                       </li>
-                      <li>
-                        <Link>Party Wear</Link>
+                      <li onClick={() => handleClick("subcategory", "Dresses")}>
+                        <Link to="/product?subcategory=Dresses">Party Wear</Link>
                       </li>
-                      <li>
-                        <Link>Trousers</Link>
+                      <li onClick={() => handleClick("subcategory", "Watches")}>
+                        <Link to="/product?subcategory=Watches">Watches</Link>
                       </li>
                     </ul>
                   </div>
                   <div className="menuList">
                     <ul>
                       <p>Beauty</p>
-                      <li>
-                        <Link>Face Wash</Link>
+                      <li onClick={() => handleClick("subcategory", "Face Wash")}>
+                        <Link to="/product?subcategory=Face Wash">Face Wash</Link>
                       </li>
-                      <li>
-                        <Link>Lipstick</Link>
+                      <li onClick={() => handleClick("subcategory", "Lipstick")}>
+                        <Link to="/product?subcategory=Lipstick">Lipstick</Link>
                       </li>
                       <li>
                         <Link>Beauty Gift</Link>
@@ -243,25 +230,25 @@ const Navbar = () => {
                 className="menuItem"
                 onClick={() => handleClick("category", "Men")}
               >
-                <Link to={`/product?categories=men`}>MEN</Link>
+                <Link to={`/product?category=Men`}>MEN</Link>
               </li>
               <li
                 className="menuItem"
                 onClick={() => handleClick("category", "Women")}
               >
-                <Link to={`/product?categories=women`}>WOMEN</Link>
+                <Link to={`/product?category=Women`}>WOMEN</Link>
               </li>
               <li
                 className="menuItem"
                 onClick={() => handleClick("category", "Kids")}
               >
-                <Link to={`/product?categories=kids`}>KIDS</Link>
+                <Link to={`/product?category=Kids`}>KIDS</Link>
               </li>
               <li
                 className="menuItem"
                 onClick={() => handleClick("category", "Beauty")}
               >
-                <Link to={`/product?categories=beautycare`}>BEAUTY</Link>
+                <Link to={`/product?category=Beauty`}>BEAUTY</Link>
               </li>
               <br />
 

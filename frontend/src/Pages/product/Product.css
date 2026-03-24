@@ -1,139 +1,129 @@
-.productCon {
-    width: 100%;
-    /* background-color: red; */
+.product-page {
+  padding-top: 80px;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.product-top-bar {
+  padding: 20px 20px 10px 30px;
+  border-bottom: 1px solid #edeff2;
+}
+
+.proNavigation {
+  font-size: 14px;
+  color: #282c3f;
+  margin-bottom: 20px;
+}
+
+.proNavigation span {
+  color: #7e818c;
+}
+
+.product-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.proCount {
+  font-size: 16px;
+  font-weight: 700;
+  color: #282c3f;
+}
+
+.proCount span {
+  color: #878b94;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+/* Layout */
+.product-main-container {
+  display: flex;
+  border-top: 1px solid #edeff2;
+}
+
+.filters-sidebar {
+  width: 260px;
+  border-right: 1px solid #edeff2;
+  padding: 20px 20px 20px 30px;
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+
+.filter-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #282c3f;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.filter-section {
+  border-bottom: 1px solid #edeff2;
+  padding: 15px 0;
+}
+
+.filter-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #282c3f;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #282c3f;
+  cursor: pointer;
+}
+
+.filter-item input {
+  margin-right: 12px;
+  width: 16px;
+  height: 16px;
+  accent-color: #ff3f6c;
+  cursor: pointer;
+}
+
+.products-grid-container {
+  flex: 1;
+  padding: 24px;
+}
+
+.proGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 1200px) {
+  .proGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
-  .proContainer {
-    width: 100%;
-    margin: auto;
-    padding: 9rem 1.3rem 0.5rem 1.3rem;
-    border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+@media (max-width: 992px) {
+  .proGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  .proNavigation {
-    font-size: 14px;
-    font-weight: 600;
-    color: rgb(42, 42, 42);
-  }
-  .proNavigation span {
-    color: rgb(71, 71, 71);
-    font-weight: 400;
-  }
-  .proCount {
-    margin: 10px 0;
-    font-weight: 600;
-    font-size: 15px;
-    color: rgb(42, 42, 42);
-  }
-  .proCount span {
-    font-weight: 300;
-  }
-  .proSort {
-    display: flex;
-    justify-content: flex-end;
-    color: rgb(4, 4, 4);
-    margin-top: -50px;
-    margin-bottom: 5px;
-    align-items: center;
-    /* background-color: blue; */
-  }
-  .proSort > div {
-    display: flex;
-    gap: 10px;
-    /* background-color: rgb(202, 111, 0); */
-  }
-  .sortBy .ant-select-selection-placeholder {
-    color: rgb(255, 0, 217); /* Change this to your desired placeholder color */
-  }
-  .proBox {
-    display: flex;
-    width: 100%;
-    overflow-y: auto;
-    background-color: rgb(255, 255, 255);
-  }
-  .proBox::-webkit-scrollbar {
-    display: none;
-  }
-  .proFilters {
-    /* height: 100vh; */
-    width: 270px;
-    overflow-y: scroll;
-    padding: 1rem;
-  }
-  .proFilters::-webkit-scrollbar {
+}
+
+@media (max-width: 768px) {
+  .filters-sidebar {
     display: none;
   }
   .proGrid {
-    width: 100%;
-    border: 1px solid rgb(237, 237, 237);
-    padding: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
   }
-  .proGrid > div {
-    width: 210px;
-    height: auto;
-  }
-  .pagination {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3rem 0 3rem 0;
-  }
-  .pagination button {
-    border: 1px solid rgb(112, 69, 84);
-    font-size: 15px;
-    background-color: #ffffff;
-    padding: 5px 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: #ff18be !important; 
-    border-color: #f9f9f9 !important; 
-  }
-  .ant-checkbox:hover .ant-checkbox-inner {
-    background-color: #ff18be !important; 
-    border-color: #f9f9f9 !important; 
-  }
-  
-  @media (max-width: 720px) {
-    .proSkeleton {
-      padding: 2rem;
-    }
-    .proContainer {
-      padding: 3.5rem 1.3rem 0.5rem 1.3rem;
-    }
-    .proCount {
-      display: none;
-    }
-    .proNavigation {
-      display: none;
-    }
-    .proFilters {
-      display: none;
-    }
-    .proSort {
-      display: none;
-    }
-    .proGrid {
-      width: 100%;
-      padding: 0;
-      gap: 0;
-    }
-    .proGrid > div {
-      width: 50%;
-    }
-  }
-  @media (max-width: 520px) {
-    .proContainer {
-      padding: 3rem 1.3rem 0.5rem 1.3rem;
-    }
-  }
-  @media (max-width: 320px) {
-    .proContainer {
-      padding: 2.5rem 1.3rem 0.5rem 1.3rem;
-    }
-  }
+}

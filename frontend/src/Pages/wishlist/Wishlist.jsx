@@ -3,8 +3,8 @@ import Login from "../../Components/Login/Login";
 import { Context } from "../../Contexts/AuthContext";
 import { Link } from "react-router-dom";
 import "./Wishlist.css";
-import axios from "axios";
 import { useToast } from "@chakra-ui/react";
+import api from "../../api/axios";
 
 const Wishlist = () => {
   const [wishData, setWishData] = useState([]);
@@ -18,10 +18,7 @@ const Wishlist = () => {
 
   const showWishData = async () => {
     try {
-      const res = await axios.get(
-        ``,
-        { withCredentials: true }
-      );
+      const res = await api.get("/wishlists");
       setWishData(res.data.myWishlist);
     } catch (error) {
       console.log("error", error);
@@ -30,14 +27,9 @@ const Wishlist = () => {
 
   const handleMoveToBag = async (id) => {
     try {
-      const addToBagRes = await axios.post(
-        ``,
-        { withCredentials: true }
-      );
+      const addToBagRes = await api.post(`/carts/add/${id}`);
 
-      const deleteFromWishlistRes = await axios.delete(
-        ``
-      );
+      const deleteFromWishlistRes = await api.delete(`/wishlists/delete/${id}`);
 
       if (
         addToBagRes.data.message === "Product Added Successfully" &&
@@ -72,10 +64,7 @@ const Wishlist = () => {
 
   const handleDeleteWish = async (id) => {
     try {
-      const deleteFromWishlistRes = await axios.delete(
-        ``,
-        { withCredentials: true }
-      );
+      const deleteFromWishlistRes = await api.delete(`/wishlists/delete/${id}`);
 
       if (
         deleteFromWishlistRes.data.message === "Item was removed from Wishlist!"
@@ -110,36 +99,31 @@ const Wishlist = () => {
   }, []);
 
   return (
-    <div>
+    <div className="wishlist-page">
+      <h3 className="wishlist-header">My Wishlist <span>({wishData.length} Items)</span></h3>
       <div className="fillItem">
         {wishData.map((ele) => (
           <div className="itemwish" key={ele._id}>
+            <div className="remove-icon" onClick={() => handleDeleteWish(ele._id)}>
+              <MdClose />
+            </div>
             <div className="itemwish2">
-              <Link to={`/product/${ele._id}`}>
+              <Link to={`/product/${ele._id}`} className="image-container">
                 <img src={ele.image} alt="ProductImage" className="imagewish" />
               </Link>
-              <h4>{ele.brand}</h4>
-              <p>{ele.title}</p>
-              <div className="price">Rs. {ele.price}</div>
-              <div className="sizeOptions">
-                {ele.sizes.map((size, index) => (
-                  <span key={index}>{size}</span>
-                ))}
+              <div className="product-info">
+                <h4>{ele.brand}</h4>
+                <p>{ele.title}</p>
+                <div className="price-container">
+                  <span className="current-price">Rs. {ele.price}</span>
+                </div>
               </div>
-              <div className="btnDiv">
-                <button
-                  className="deleteCart"
-                  onClick={() => handleMoveToBag(ele._id)}
-                >
-                  MOVE TO BAG
-                </button>
-                <button
-                  className="deleteCart" style={{marginLeft:"1rem"}}
-                  onClick={() => handleDeleteWish(ele._id)}
-                >
-                  REMOVE ITEM
-                </button>
-              </div>
+              <button
+                className="move-to-bag-btn"
+                onClick={() => handleMoveToBag(ele._id)}
+              >
+                MOVE TO BAG
+              </button>
             </div>
           </div>
         ))}

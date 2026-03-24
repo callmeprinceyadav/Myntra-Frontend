@@ -1,15 +1,15 @@
 import { useState, useContext } from "react";
-import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../../Contexts/AuthContext";
 import { useToast } from "@chakra-ui/react";
 import "./Login.css";
+import api from "../../api/axios";
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({ email: "", pass: "" });
   const [showPassword, setShowPassword] = useState(false); 
-  const { setIsAuth, setUser } = useContext(Context);
+  const { login } = useContext(Context);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -24,18 +24,14 @@ const Login = () => {
   const handleLoginUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "",
-        userDetails,
-        { withCredentials: true }
+      const response = await api.post(
+        "/users/login",
+        userDetails
       );
       console.log(response.data.ACCESS_TOKEN);
       console.log(response);
       if (response.data.msg === "Login Successful") {
-        setIsAuth(true);
-        setUser(response.data.user.username);
-        localStorage.setItem("setIsAuth", true);
-        localStorage.setItem("setUser", response.data.user.username);
+        login(response.data.user);
         // alert("Login Successful ")
         toast({
           title: "Login Successful",
@@ -79,7 +75,7 @@ const Login = () => {
         </div>
         <div className="loginDetail">
           <div>
-            <h3 style={{fontSize:"30px",fontWeight:"bold"}}>LOGIN HERE</h3>
+            <h3>Login <span>or Signup</span></h3>
           </div>
           <div className="formInput">
             <form onSubmit={handleLoginUser}>
@@ -90,7 +86,7 @@ const Login = () => {
                 onChange={handleUserDetails}
                 type="email"
                 required
-                placeholder="Enter email"
+                placeholder="Mobile Number or Email"
               />
               <div className="passwordContainer">
                 <input
@@ -100,7 +96,7 @@ const Login = () => {
                   onChange={handleUserDetails}
                   required
                   type={showPassword ? "text" : "password"}
-                  placeholder="Set a password"
+                  placeholder="Password"
                 />
                 <span
                   className="passwordToggleIcon"
@@ -110,9 +106,15 @@ const Login = () => {
                 </span>
               </div>
               <p>
-                New User? <Link to="/signup">Signup</Link>.
+                By continuing, I agree to the <span style={{color:"#ff3f6c",fontWeight:"700"}}>Terms of Use</span> & <span style={{color:"#ff3f6c",fontWeight:"700"}}>Privacy Policy</span>
               </p>
-              <button type="submit" className="loginBtn">SUBMIT</button>
+              <button type="submit" className="loginBtn">CONTINUE</button>
+              <p>
+                Have trouble logging in? <span style={{color:"#ff3f6c",fontWeight:"700"}}>Get help</span>
+              </p>
+              <p style={{marginTop:"30px"}}>
+                New to Myntra? <Link to="/signup" style={{color:"#ff3f6c",fontWeight:"700",textDecoration:"none"}}>Create an account</Link>
+              </p>
             </form>
           </div>
         </div>
